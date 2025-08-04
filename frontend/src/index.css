@@ -1,0 +1,298 @@
+html{
+    background-color: #09080e;
+}
+
+.bluelight{
+    background-image: linear-gradient(to right bottom, #757bef, #6858ad, #503971, #311f3c, #0f0210);
+}
+.pinklight{
+    background-image: linear-gradient(to right, #ca6ec8, #955396, #633966, #372039, #0f0210);
+}
+
+.hidenScroll{
+    scrollbar-width: none;
+}
+
+.active{
+    background-color: yellowgreen;
+    color: black
+}
+
+/*****************************************/
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.music-player {
+  background: #2c3e50;
+  border-radius: 15px;
+  padding: 25px;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.song-info {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.song-info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ecf0f1;
+}
+
+.song-info p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+  color: #bdc3c7;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 10px;
+}
+
+.time-display {
+  font-size: 0.9rem;
+  color: #ecf0f1;
+  min-width: 40px;
+}
+
+.custom-progress-bar {
+  flex-grow: 1;
+  height: 6px;
+  background: #34495e;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: height 0.2s ease;
+}
+
+.custom-progress-bar:hover {
+  height: 8px;
+}
+
+.progress {
+  height: 100%;
+  background: #66bc1a;
+  border-radius: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: background 0.2s ease;
+}
+
+.progress-thumb {
+  width: 16px;
+  height: 16px;
+  background: #66bc1a;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.progress-thumb:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+  background: #66bc1a;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ecf0f1;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.play-btn {
+  background: #1abc9c;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+}
+
+.play-btn:hover {
+  background: #16a085;
+  transform: scale(1.05);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.volume-icon {
+  font-size: 20px;
+  color: #ecf0f1;
+}
+
+.volume-slider {
+  width: 100px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #34495e;
+  border-radius: 2px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #1abc9c;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #16a085;
+}
+/**********************************************/
+.singerCircle1{
+  background-image: url(./assets/eminem.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle2{
+  background-image: url(./assets/taylor.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle3{
+  background-image: url(./assets/Billie.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-position: 0 -20px;
+  background-size: cover;
+}
+.singerCircle4{
+  background-image: url(./assets/JamesHetfield.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle5{
+  background-image: url(./assets/theWeekend.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle6{
+  background-image: url(./assets/Halsey2.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle7{
+  background-image: url(./assets/mgk.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle8 {
+  background-image: url(./assets/ariana.jpg);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle9 {
+  background-image: url(./assets/kendricklamar.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle10 {
+  background-image: url(./assets/NF.jpg);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle11 {
+  background-image: url(./assets/NoahSebastian.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+.singerCircle12 {
+  background-image: url(./assets/drake.jfif);
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.banner{
+  background-image: url(./assets/copilot_image_1754294035587.jpeg);
+ 
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/*****************************************/
+.sign > input{
+  border: 2px solid green;
+  border-radius: 7px;
+  padding: 5px
+}
+/******************************************/
+.genres > div{
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+
+@keyframes comingUp {
+  from{transform: translateY(0px);}
+  to{transform: translateY(-10px);}
+}
+
+@import "tailwindcss"
