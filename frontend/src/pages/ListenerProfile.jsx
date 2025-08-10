@@ -40,11 +40,11 @@ const ListenerProfile = () => {
     }
 
     return ( 
-        <div className="text-white pt-10">
+        <div className="text-white pt-10 relative">
 
-            <div className="flex items-center fixed top-0 left-0 right-0 bg-gray-900 p-4 space-x-10">
+            <div className="flex items-center absolute top-0 right-0 left-0 bg-gray-900 p-4 space-x-10">
                 <div onClick={()=> navigate(-1)} className="text-2xl"><FaArrowLeft /></div>
-                <p className="text-xl font-[600]">Library</p>
+                <p className="text-xl font-[600]">Profile</p>
             </div>
 
             <div className="flex items-center gap-5 px-5 mt-10">

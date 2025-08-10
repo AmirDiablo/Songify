@@ -27,6 +27,8 @@ const Home = () => {
     return ( 
         <div>
 
+            <SideNav setIsOpen={setIsOpen} />
+
             <div className=" relative z-0">
             
                 <div className="-translate-x-[20px] -translate-y-[20px] *:w-45 *:aspect-video w-40 aspect-video *:blur-xl flex flex-col gap-1 rotate-45 z-0">
@@ -71,8 +73,6 @@ const Home = () => {
             </div>
 
             <TopDaily />
-
-            <SideNav setIsOpen={setIsOpen} />
             
         </div>
      );

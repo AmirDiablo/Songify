@@ -288,6 +288,94 @@ html{
   background-size: cover;
 }
 
+/* .profile{
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 60% 40%;
+}
+.profile>.div1{
+  grid-area: 1/1/2/2;
+  background-color: red;
+  height: max-content;
+  margin-bottom: 300px;
+}
+.div2{
+  grid-area: 2/1/3/2;
+  height: max-content;
+  
+}
+.div3{
+  grid-area: 1/2/3/3;
+} */
+
+@media only screen and (min-width: 768px) {
+  .profile{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 60% 40%;
+}
+.profile>.div1{
+  grid-area: 1/1/2/2;
+  height: max-content;
+}
+.div2{
+  grid-area: 2/1/3/2;
+  height: max-content;
+}
+.div3{
+  grid-area: 1/2/3/3;
+}
+  }
+
+@media only screen and (min-width: 1200px) {
+  .layout{
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  height: 100vh;
+  width: 100%;
+}
+.pages{
+ /*  grid-column-start: 3;
+  grid-column-end: 11; */
+  grid-column: 3/11;
+}
+.bottomNav{
+  /* grid-column-start: 1;
+  grid-column-end: 3; */
+  grid-column: 1/3;
+}
+.createPanel{
+  width: 50%;
+  left: 50%;
+  transform: translateX(-50%)
+}
+.smallPLaying{
+  display: absolute;
+  left: 0;
+  width: 20%;
+  z-index: 10;
+}
+
+.playing{
+  background-color: rgba(0, 0, 0, 0);
+}
+.player{
+  width: 20%;
+  background-color: black;
+}
+.controller{
+  width: 100%;
+}
+.controller>div{
+  width: 100%;
+}
+.playerButtons>div{
+  padding: 10px;
+  transform: scale(0.6);
+}
+}
+/*************************************/
+
 
 
 @keyframes comingUp {

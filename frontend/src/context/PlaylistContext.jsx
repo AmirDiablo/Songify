@@ -31,10 +31,10 @@ export const PlaylistProvider = ({ children })=> {
     }
 
     useEffect(()=> {
-        const myId = JSON.parse(localStorage.getItem("user"))?.id
+        const user = JSON.parse(localStorage.getItem("user"))
     
         const fetchPlaylists = async ()=> {
-            const response = await fetch("http://localhost:3000/api/playlist/myPlaylists?q="+myId, {
+            const response = await fetch("http://localhost:3000/api/playlist/myPlaylists?q="+user.id, {
                 method: "GET",
                 headers: {
                     "authorization" : `Bearer ${user.token}`
@@ -47,7 +47,7 @@ export const PlaylistProvider = ({ children })=> {
             }
         }
 
-        if (myId) {
+        if (user) {
             fetchPlaylists()
         }
 

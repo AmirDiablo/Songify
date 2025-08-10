@@ -15,7 +15,7 @@ const SideNav = ({setIsOpen}) => {
     }
 
     return ( 
-        <div className="menu reltaive text-white w-[90%] bg-gray-900 px-5 fixed -left-[90%] top-0 py-5 bottom-0 z-10 transition-all duration-300">
+        <div className="menu reltaive text-white w-[90%] bg-gray-900 px-5 fixed -left-[90%] top-0 py-5 bottom-0 z-10 transition-all duration-300 md:w-[50%] lg:w-[40%]">
 
             <div onClick={close} className="absolute top-10 right-5 text-2xl"><RxCross1 /></div>
 
@@ -39,10 +39,10 @@ const SideNav = ({setIsOpen}) => {
                     <p className="text-xl">What's new</p>
                 </div>
 
-                <div className="flex items-center gap-3 p-2">
+                <Link to="/accountSetting" className="flex items-center gap-3 p-2">
                     <div className="text-2xl"><IoSettingsOutline /></div>
                     <p className="text-xl">Settings and privacy</p>
-                </div>
+                </Link>
 
             </div>
 

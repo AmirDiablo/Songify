@@ -20,8 +20,8 @@ const Search = () => {
 
             <SearchBar />
 
-            <p className="text-xl font-[600] px-5 mb-5 mt-10">Browse all</p>
-            <div className="genres px-5 *:aspect-video *:h-25 *:bg-red-400 *:rounded-xl flex flex-row flex-wrap justify-center gap-3">
+            <p className="text-xl font-[600] ml-5 mb-2 mt-10">Browse all</p>
+            <div className="genres px-5 *:aspect-video *:h-25 *:bg-red-400 *:rounded-xl flex flex-row flex-wrap justify-center gap-3 mb-30">
                 <div onClick={()=> navigate("/results?q=hip hop")} className="hiphop" style={{backgroundImage: `url(${eminem})`}}>
                     <p className="bg-black/20 h-[100%] text-[20px] flex items-center justify-center font-[700]">Hip-Hop</p>
                 </div>

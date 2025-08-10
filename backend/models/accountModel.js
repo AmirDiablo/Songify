@@ -17,8 +17,10 @@ const accountSchema = new mongoose.Schema({
         unique: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
+    },
+    googleId: {
+        type: String
     },
     isArtist: {
         type: Boolean,

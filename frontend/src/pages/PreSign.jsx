@@ -1,6 +1,7 @@
 import { FcGoogle } from "react-icons/fc";
 import { IoPhonePortraitOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import GoogleLoginButton from "../components/GoogleLoginButton"
 
 const PreSignUp = () => {
     return ( 
@@ -33,10 +34,7 @@ const PreSignUp = () => {
                     <Link to='/signup'>
                         <div className="bg-lime-600 rounded-full text-center p-4">Sign Up Free</div>
                     </Link>
-                    <div className="flex items-center justify-center relative text-center border-1 border-white/50 rounded-full p-4">
-                        <div className="absolute text-[30px] left-5"><FcGoogle /></div>
-                        CONTINUE WITH GOOGLE
-                    </div>
+                    <GoogleLoginButton />
                     <div className="relative flex justify-center items-center rounded-full p-4 border-1 border-white/50">
                         <div className="absolute left-5 text-[25px]"><IoPhonePortraitOutline /></div>
                         CONTINUE WITH PHONE NUMBER

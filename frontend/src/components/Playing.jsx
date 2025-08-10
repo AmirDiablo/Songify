@@ -162,7 +162,7 @@ const Playing = ({changeHidden}) => {
 
 
     return ( 
-        <div className="text-white relative playing">
+        <div className="text-white player relative h-screen">
 
             <div className="*:p-3 left-0 right-0 flex justify-between absolute z-10 top-10 px-10 *:backdrop-blur-2xl *:text-[20px] *:bg-white/20 *:rounded-full">
                 <div onClick={handleClose}><FaArrowLeft /></div>
@@ -171,7 +171,7 @@ const Playing = ({changeHidden}) => {
 
             <img src={"/cover/"+currentSong?.cover} className="fadeImage w-screen blur-xl" />
 
-            <div className="flex gap-5 flex-col justify-center absolute left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] w-[90%]">
+            <div className="flex gap-5 flex-col justify-center absolute left-[50%] -translate-x-[50%] top-20 w-[90%]">
                 <div className="rounded-full w-[80%] mx-auto aspect-square overflow-hidden ">
                     <img src={"/cover/"+currentSong?.cover} />
                 </div>
@@ -184,7 +184,7 @@ const Playing = ({changeHidden}) => {
 
 
 
-            <div className="bg-[#09080e] translate-y-[100px] h-max w-screen py-10 absolute left-0 right-0  -bottom-80  px-10">
+            <div className="bg-[#09080e]  h-max w-screen py-10 absolute left-0 right-0 bottom-0  px-10 controller">
                 
                 <audio ref={audioRef} src={"/songs/"+currentSong?.fileName} onTimeUpdate={handleTimeUpdate}
                   onEnded={handleNext}
@@ -213,7 +213,7 @@ const Playing = ({changeHidden}) => {
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center *:p-5 *:flex *:justify-center *:items-center *:text-center *:aspect-square *:text-[20px] *:rounded-full">
+                <div className="flex justify-between items-center *:p-5 *:flex *:justify-center *:items-center *:text-center *:aspect-square *:text-[20px] *:rounded-full playerButtons">
                     <div><IoShuffle /></div>
                     <div onClick={handleNext} className="scale-[0.9] bg-gray-800"><IoPlaySkipBackSharp /></div>
                     <div className="active" onClick={togglePlay}>{play ? <FaPause /> : <FaPlay />}</div>

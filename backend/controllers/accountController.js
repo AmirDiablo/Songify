@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken")
 const Account = require("../models/accountModel")
 const fs = require('fs')
 const mongoose = require("mongoose")
+const bcrypt = require("bcryptjs")
+const redisClient = require("../redis")
 
 const createToken = (_id)=> {
     return jwt.sign({_id}, process.env.SECRET, { expiresIn: "10d" })
@@ -137,4 +139,62 @@ const editProfile = async(req, res)=> {
     
 }
 
-module.exports = { signup, userInfo, liveSearch, follow, followings, userLogin, editProfile }
+const continueWithGoogle = async(req, res)=> {
+    const {googleId, username, email} = req.body
+    const check = await Account.findOne({email})
+    let user;
+
+    try{
+        //login
+        if(check) {
+            user = check
+        }else{
+            const account = await Account.create({username, email, googleId, isArtist: false}) 
+            user = account
+        }
+
+        const token = createToken(user._id)
+        res.status(200).json({id: user._id, token})
+    }catch(err) {
+        res.status(500).json({error: err.message})
+    }
+}
+
+const changePass = async(req, res)=> {
+    const {currentPass, newPass, id} = req.body
+    const user = await Account.findOne({_id: id})
+    const match = await bcrypt.compare(currentPass, user.password)
+
+    try{
+        if(!match) {
+            console.log("false")
+            throw new Error("the password you entered is not match with the one that exist in database")
+        }
+
+        console.log('true')
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(newPass, salt)
+        const change = await Account.updateOne({_id: id}, {password: hash})
+        res.status(200).json("sumbited")
+    }
+    catch(err) {
+        res.status(500).json({error: err.message})
+    }
+ 
+}
+
+const setPass = async(req, res)=> {
+    const {newPass, id} = req.body
+    
+    try{
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(newPass, salt)
+        const setPass = await Account.updateOne({_id: id}, {password: hash})
+        res.status(200).json(setPass)
+    }
+    catch(err) {
+        res.status(500).json({error: err.message})
+    }
+}
+
+module.exports = { signup, userInfo, liveSearch, follow, followings, userLogin, editProfile, continueWithGoogle, changePass, setPass }

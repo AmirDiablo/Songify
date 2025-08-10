@@ -45,7 +45,6 @@ const someSongs = async(req, res) => {
 
 const someAlbums = async(req, res) => {
     const id = req.query.q
-    console.log(id)
     const albums = await Album.find({artistId: id}).limit(10)
     res.status(200).json(albums)
 }
@@ -97,7 +96,6 @@ const songsOfAlbum = async(req, res)=> {
     const albumName = validator.escape(req.query.q)
     const artistId = validator.escape(req.query.n)
 
-    console.log(albumName, artistId)
     try{
         if(!albumName || !artistId) {
             throw new Error("album name and artist id is required")

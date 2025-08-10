@@ -11,7 +11,7 @@ const Profile = () => {
     const [songs, setSongs] = useState([])
     const [albums, setAlbums] = useState([])
     const navigate = useNavigate()
-    const q = useLocation().search.split("=")[1].split("&")[0]  //id
+    const q = useLocation().search.split("=")[1]?.split("&")[0]  //id
     /* const n = useLocation().search.split("&")[1].split("=")[1]  //name */
 
     const fetchArtist = async()=> {
@@ -80,18 +80,22 @@ const Profile = () => {
     }
 
     return ( 
-        <div className="text-white pb-50">
+        <div className="text-white pb-50 lg:p-10 lg:pb-20">
 
             {artist.map(item=> (
-                <div>
-                    <div className="relative">
-                        <img src={"/profiles/"+item.profile} className="w-screen"  />
-                        <p className="text-3xl font-[700] flex pl-5 pb-5 items-end absolute bottom-0 top-0 left-0 right-0 bg-black/20 w-[100%]">{item.username}</p>
-                    </div>
+                <div className="profile">
+                    <div>
 
-                    <div className="flex items-center justify-between px-5 py-5">
-                        <button onClick={follow} className="border-1 border-white rounded-full px-5 py-1">{followings.includes(item._id) ? "unFollow" : "follow"}</button>
-                        <div className="p-2 text-black text-[25px] flex justify-center items-center bg-green-500 aspect-square rounded-full w-15"><FaPlay /></div>
+                        <div className="relative  mx-auto div1">
+                            <img src={"/profiles/"+item.profile} className="w-screen"  />
+                            <p className="text-3xl font-[700] flex pl-5 pb-5 items-end absolute bottom-0 top-0 left-0 right-0 bg-black/20 w-[100%]">{item.username}</p>
+                        </div>
+
+                        <div className="flex items-center justify-between px-5 py-5 md:mx-auto  div2">
+                            <button onClick={follow} className="border-1 border-white rounded-full px-5 py-1">{followings.includes(item._id) ? "unFollow" : "follow"}</button>
+                            <div className="p-2 text-black text-[25px] flex justify-center items-center bg-green-500 aspect-square rounded-full w-15"><FaPlay /></div>
+                        </div>
+
                     </div>
 
                     {/* <div>
@@ -101,7 +105,7 @@ const Profile = () => {
                     </div> */}
 
 
-                    <div>
+                    <div className="div3">
                         <strong className="ml-5">All Songs</strong>
 
                         {songs.map((item, index)=> (

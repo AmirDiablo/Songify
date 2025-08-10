@@ -16,6 +16,12 @@ export const UserProvider = ({ children })=> {
         setUserId(value)
     }
 
+    const logout = ()=> {
+        localStorage.removeItem("user")
+        setUser(null)
+        setUserId(null)
+    }
+
     const updateFollowings = (userId)=> {
         const Exist = followings.includes(userId)
 
@@ -54,7 +60,7 @@ export const UserProvider = ({ children })=> {
     console.log(user, followings)
     
     return (
-        <UserContext.Provider value={{user, followings, login, updateFollowings, updateProfile}}>
+        <UserContext.Provider value={{user, followings, login, updateFollowings, updateProfile, logout}}>
             {children}
         </UserContext.Provider>
     )
