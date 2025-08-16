@@ -12,8 +12,6 @@ const Library = () => {
     const [followings, setFollwings] = useState([])
     const [playlists, setPlaylists] = useState([])
     const navigate = useNavigate()
-
-    console.log(user.token)
     
     const fetchFollowings = async()=> {
         const response = await fetch("http://localhost:3000/api/account/followings?q="+myId)
@@ -25,10 +23,11 @@ const Library = () => {
     }
 
     const fetchPlaylists = async()=> {
+        const token = await JSON.parse(localStorage.getItem("user")).token
         const response = await fetch("http://localhost:3000/api/playlist/myPlaylists?q="+myId, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${user.token}`
+                "Authorization" : `Bearer ${token}`
             }
         })
         const json = await response.json()
@@ -48,7 +47,7 @@ const Library = () => {
         if(user.token) {
             fetchPlaylists()
         }
-    }, [ , user.token])
+    }, [ ,user.token])
 
     useEffect(()=> {
         if(myId) {

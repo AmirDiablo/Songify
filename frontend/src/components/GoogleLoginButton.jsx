@@ -3,6 +3,7 @@ import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import { FcGoogle } from "react-icons/fc";
 
 export default function GoogleLoginButton() {
   const navigate = useNavigate()
@@ -10,7 +11,7 @@ export default function GoogleLoginButton() {
   
   return (
       <GoogleLogin
-        shape='pill'
+        shape='pill'     
         onSuccess={(credentialResponse) => {
         const decoded = jwtDecode(credentialResponse.credential);
         

@@ -3,23 +3,22 @@ import { FaPause } from "react-icons/fa6";
 import { usePlayer } from "../context/PlayerContext";
 
 const SmallPlaying = ({}) => {
-    const {songs, index, setPlay, play, setIsOpen, setIsHidden} = usePlayer()
+    const {songs, setSongs, index, setIndex, setPause, setPlay, play, setIsOpen, setIsHidden} = usePlayer()
 
     const openPlayer = ()=> {
         setIsOpen(true)
         setIsHidden(false)
     }
 
-    const playMusic = ()=> {
+    const playMusic = (e)=> {
+        e.stopPropagation()
         document.querySelector(".smallPLaying").style.display = "inline"
-        setSongs(playList)
-        setIndex(songIndex)
-        /* setIsOpen(true) */
         setPause(false)
         setPlay(true)
     }
 
-    const pauseMusic = ()=> {
+    const pauseMusic = (e)=> {
+        e.stopPropagation()
         setPause(true)
         setPlay(false)
     }
@@ -32,7 +31,7 @@ const SmallPlaying = ({}) => {
                     <p className="font-[600] text-[17px]">{songs[index]?.title}</p>
                     <p className="text-white/50">{songs[index]?.artistId.username}</p>
                 </div>
-                <div className="bg-black p-2 rounded-full mr-5">{play ? <FaPause onClick={pauseMusic} /> : <FaPlay onClick={playMusic} />}</div>
+                <div className="bg-black p-2 rounded-full mr-5">{play ? <FaPause onClick={(e)=> pauseMusic(e)} /> : <FaPlay onClick={(e)=> playMusic(e)} />}</div>
             </div>
         </div>
      );

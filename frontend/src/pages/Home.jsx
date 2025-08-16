@@ -48,26 +48,26 @@ const Home = () => {
 
             <Categories />
 
-            <div className="mt-10 px-10 mb-10">
-                <p className="text-white text-[20px] mb-3">Curated & Trending</p>
-                <div className="flex gap-2 *:h-max *:flex-none overflow-x-auto hidenScroll">
+            <div className="mt-10  mb-10">
+                <p className="text-white text-[20px] px-10 mb-3">Curated & Trending</p>
+                <div className="flex gap-2 px-10 *:h-max *:flex-none overflow-x-auto hidenScroll">
 
-                    <div className="rounded-3xl bg-purple-300 w-[90%] aspect-video relative">
+                    <div className="rounded-3xl bg-purple-300 w-[90%] max-w-120 aspect-video relative ">
                         <p className="text-[20px] font-[700] p-5">Discover weekly</p>
                         <p className="px-5 -mt-3 w-60">The original slow instrumental best playlist</p>
-                        <img className="w-25 absolute right-0 bottom-0" src={girl} />
+                        <img className="w-[35%] absolute right-0 bottom-0" src={girl} />
                     </div>
 
-                    <div className="rounded-3xl bg-lime-400 w-[90%] aspect-video relative">
+                    <div className="rounded-3xl bg-lime-400 w-[90%] max-w-120 aspect-video relative">
                         <p className="text-[20px] font-[700] p-5">Discover weekly</p>
                         <p className="px-5 -mt-3 w-60">The best and new phonk playlist</p>
-                        <img src={girl2} className="w-30 absolute right-0 bottom-0" />
+                        <img src={girl2} className="w-[40%] absolute right-0 bottom-0" />
                     </div>
 
-                    <div className="rounded-3xl bg-indigo-400 w-[90%] aspect-video relative">
+                    <div className="rounded-3xl bg-indigo-400 w-[90%] max-w-120 aspect-video relative">
                         <p className="text-[20px] font-[700] p-5">Discover weekly</p>
                         <p className="px-5 -mt-3 w-60">The best and new phonk playlist</p>
-                        <img src={boy} className="w-25 absolute right-0 bottom-0" />
+                        <img src={boy} className="w-[30%] absolute right-0 bottom-0" />
                     </div>
                 </div>
             </div>

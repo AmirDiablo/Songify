@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const startSchedule = require("./schedule")
 const verificationRoutes = require('./routes/verification')
 const accountRoutes = require("./routes/accountRoutes")
 const productRoutes = require("./routes/productRoutes")
@@ -30,6 +31,7 @@ mongoose.connect(process.env.MONGODB_URI)
     app.listen(process.env.PORT, ()=> {
         console.log("connected to DB and server start listen on port", process.env.PORT)
     })
+    startSchedule()
 })
 .catch((err)=> {
     console.log(err)

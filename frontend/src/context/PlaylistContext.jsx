@@ -69,8 +69,6 @@ export const PlaylistProvider = ({ children })=> {
         }
         
     }, [selectedId])
-
-    /* console.log(selectedTracks, selectedId) */
     
     return (
         <PlaylistContext.Provider value={{playlists, selectedTracks, setPlaylists, setSelectedId, addToPlaylist, deleteFromPlaylist, selectedId, addToLib, deleteFromLib}}>

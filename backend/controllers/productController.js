@@ -2,6 +2,7 @@ const {Track, Album} = require("../models/productModel")
 const Account = require('../models/accountModel')
 const validator = require("validator")
 const mongoose = require("mongoose")
+const {redisClient} = require("../redis")
 
 
 const post = async(req, res)=> {
@@ -129,4 +130,27 @@ const findSingle = async(req, res)=> {
     }
 }
 
-module.exports = { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle }
+const streamMusic = async(req, res)=> {
+    await redisClient.incr(`track:${req.params.id}:streams`)
+    res.status(200).send("stream counted")
+}
+
+const randomTrack = async(req, res)=> {
+    
+    try{
+        const randomMusic = await Track.aggregate([
+            {'$sample': {size: 3}}
+        ])
+        .exec() // اجرای aggregation
+        .then((musics) =>
+            Track.populate(musics, { path: 'artistId' }) // پاپیولیت کردن artistId
+        );
+        
+        res.status(200).json(randomMusic)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
+
+module.exports = { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle, streamMusic, randomTrack }

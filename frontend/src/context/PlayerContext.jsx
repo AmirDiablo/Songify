@@ -9,9 +9,21 @@ export const PlayerProvider = ({ children })=> {
     const [isHidden, setIsHidden] = useState(true)     //player should be hidden or not
     const [pause, setPause] = useState(false)           //just for handle icons
     const [isOpen, setIsOpen] = useState(false)         //
+    const [isRandom, setIsRandom] = useState(false)
+    const [playedSongs, setPlayedSongs] = useState([])
+
+    const updatePlayedSongs = (newSongs)=> {
+        let playedSongslList = playedSongs
+        newSongs.forEach(element => playedSongslList = [...playedSongslList, element]);
+        setPlayedSongs(playedSongslList)
+    }
+
+    useEffect(()=> {
+        console.log(playedSongs)
+    }, [playedSongs])
     
     return (
-        <PlayerContext.Provider value={{songs, setSongs, play, setPlay, index, setIndex, isHidden, setIsHidden, setPause, pause, isOpen, setIsOpen}}>
+        <PlayerContext.Provider value={{songs, setSongs, play, setPlay, index, setIndex, isHidden, setIsHidden, setPause, pause, isOpen, setIsOpen, setIsRandom, isRandom, updatePlayedSongs, playedSongs}}>
             {children}
         </PlayerContext.Provider>
     )

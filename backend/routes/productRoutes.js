@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const requireAuth = require("../middlewares/userAuth")
-const { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle } = require("../controllers/productController")
+const { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle, streamMusic, randomTrack } = require("../controllers/productController")
 
 router.post("/post", requireAuth, post)
 router.get("/find", find)
@@ -12,5 +12,7 @@ router.get('/albums', albums)
 router.get("/singles", singles)
 router.get("/songsOfAlbum", songsOfAlbum)
 router.get("/findSingle", findSingle)
+router.patch("/stream/:id", streamMusic)
+router.get("/random", randomTrack)
 
 module.exports = router

@@ -1,6 +1,7 @@
 import { FaPlay } from "react-icons/fa6";
 import { usePlayer } from "../context/PlayerContext";
 import { FaPause } from "react-icons/fa6";
+import { CiStreamOn } from "react-icons/ci";
 
 const Musics = ({song, songIndex, playSong, playList}) => {
     const {play, pause ,index, setSongs, setPlay, setIndex, setIsHidden, setPause, setIsOpen} = usePlayer()
@@ -28,6 +29,7 @@ const Musics = ({song, songIndex, playSong, playList}) => {
                     <div>
                         <p className="text-[17px] font-[600]">{song.title}</p>
                         <div className="flex"><p className="text-white/50">By</p> <p className="ml-2">{song.artistId.username}</p> <p className="text-white/50"></p></div>
+                        <p className="flex items-center gap-3"><CiStreamOn />{song.streamCount}</p>
                     </div>
                 </div>
                 {index === songIndex && play && pause === false ? <FaPause onClick={pauseMusic} /> : <FaPlay onClick={()=> playMusic(song._id)}/>}

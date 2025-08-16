@@ -10,7 +10,7 @@ import { PiPlaylistBold } from "react-icons/pi";
 import { usePlayer } from "../context/PlayerContext";
 
 const Playing = ({changeHidden}) => {
-    const {songs, setPlay, index, setIsHidden, play, setPause, pause} = usePlayer()
+    const {songs, setSongs, setPlay, index, setIsHidden, play, setPause, pause, isRandom, updatePlayedSongs, playedSongs} = usePlayer()
     const [currentSongIndex, setCurrentSongIndex] = useState(index);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -18,15 +18,58 @@ const Playing = ({changeHidden}) => {
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
+
+    const fetchRandom = async()=> {
+      const response = await fetch('http://localhost:3000/api/product/random')
+      const json = await response.json()
+
+      if(response.ok){
+        setSongs(json)
+        setCurrentSongIndex(0)
+        setProgress(0)
+        setCurrentTime(0)
+        for(let i=0; i<json?.length; i++) {
+            for(let j=0; j<playedSongs?.length; j++) {
+                if(json[i]._id == playedSongs[j]._id) {
+                    json.splice(i, 1)
+                }
+            }
+        }
+        updatePlayedSongs(json)
+      }
+    }
+
+    useEffect(()=> {
+        if(songs.length != 0) {
+            if(currentSongIndex == songs.length){
+            fetchRandom()
+          }
+        }
+        
+    }, [currentSongIndex])
   
     const audioRef = useRef(null);
     const progressBarRef = useRef(null);
 
     const currentSong = songs[currentSongIndex];
 
+    const submitStream = async ()=> {
+      fetch("http://localhost:3000/api/product/stream/"+currentSong._id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type" : "application/json"
+        }
+      })
+    }
 
     useEffect(()=> {
-      setCurrentSongIndex(index)
+      if(progress >= 70) {
+        submitStream()
+      }
+    }, [])
+
+    useEffect(()=> {
+    setCurrentSongIndex(index)
     }, [index])
 
     useEffect(()=> {
@@ -77,9 +120,13 @@ const Playing = ({changeHidden}) => {
       };
     
       const handleNext = () => {
-        setCurrentSongIndex((prevIndex) => 
-          prevIndex === songs.length - 1 ? 0 : prevIndex + 1
-        );
+        setCurrentSongIndex(prevIndex => {
+          if(!isRandom) {
+            return prevIndex === songs.length - 1 ? 0 : prevIndex + 1
+          }else{
+            return prevIndex + 1
+          }
+        });
       };
     
       const handlePrev = () => {
@@ -215,9 +262,9 @@ const Playing = ({changeHidden}) => {
 
                 <div className="flex justify-between items-center *:p-5 *:flex *:justify-center *:items-center *:text-center *:aspect-square *:text-[20px] *:rounded-full playerButtons">
                     <div><IoShuffle /></div>
-                    <div onClick={handleNext} className="scale-[0.9] bg-gray-800"><IoPlaySkipBackSharp /></div>
+                    <div onClick={handlePrev} className="scale-[0.9] bg-gray-800"><IoPlaySkipBackSharp /></div>
                     <div className="active" onClick={togglePlay}>{play ? <FaPause /> : <FaPlay />}</div>
-                    <div onClick={handlePrev} className="scale-[0.9] bg-gray-800"><IoPlaySkipForward /></div>
+                    <div onClick={handleNext} className="scale-[0.9] bg-gray-800"><IoPlaySkipForward /></div>
                     <div className=""><PiPlaylistBold /></div>
                 </div>
 

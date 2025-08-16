@@ -85,7 +85,6 @@ const ArtistSignUp = () => {
 
   const createAccount = async(e)=> {
     e.preventDefault()
-    console.log(username, email, password, isArtist)
     
     const response = await fetch("http://localhost:3000/api/account/signup", {
         method: "POST",
@@ -101,7 +100,6 @@ const ArtistSignUp = () => {
         setError(null)
         setLoading(false)
         localStorage.setItem("user", JSON.stringify(json))
-        console.log(JSON.stringify(json))
         login(json)
         navigate('/')
     }

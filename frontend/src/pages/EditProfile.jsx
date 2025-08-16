@@ -9,7 +9,7 @@ const EditProfile = () => {
     const [username, setUsername] = useState()
     const [file, setFile] = useState()
     const [preview, setPreview] = useState(null)
-    const myId = user?.userInfo[0]?._id
+    const myId = JSON.parse(localStorage.getItem("user")).id
     const navigate = useNavigate()
 
     const fetchUserInfo = async()=> {

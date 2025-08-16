@@ -96,11 +96,11 @@ const PlaylistDetails = () => {
     return ( 
         <div className="text-white pb-40">
 
-            <div onClick={()=> navigate(-1)} className="text-2xl absolute top-10 left-5 z-10 bg-black p-2 rounded-full"><FaArrowLeft /></div>
+            <div onClick={()=> navigate(-1)} className="text-2xl absolute translate-x-[20px] top-10 z-10 bg-black p-2 rounded-full"><FaArrowLeft /></div>
 
-            <div className="bg-gradient-to-b relative from-neutral-800 flex items-center h-100">
-                <img src={"/cover/"+infos?.cover} alt="cover" className="w-[50%] aspect-square mx-auto rounded-2xl" />
-                <p className="absolute bottom-12 left-5 text-[25px] font-[600]">{infos?.name}</p>
+            <div className="bg-gradient-to-b from-neutral-800 relative grid grid-cols-4  ">
+                <img src={"/cover/"+infos?.cover} alt="cover" className=" aspect-square mx-auto rounded-2xl col-start-2 mt-20 mb-25 col-span-2" />
+                <p className="absolute bottom-12 left-5 text-[25px] font-[600] col-start-1 ">{infos?.name}</p>
                 <div className="absolute bottom-0 left-5 ">
                     <div onClick={()=> navigate("/profile?q="+infos?.creatorId?._id)} className="flex items-center gap-2"> 
                         <img src={"/profiles/"+infos?.creatorId?.profile} alt="profile" className="w-6 rounded-full aspect-square" />

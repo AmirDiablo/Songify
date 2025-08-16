@@ -56,8 +56,6 @@ export const UserProvider = ({ children })=> {
         }
 
     }, [ , userId])
-
-    console.log(user, followings)
     
     return (
         <UserContext.Provider value={{user, followings, login, updateFollowings, updateProfile, logout}}>

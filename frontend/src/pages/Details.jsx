@@ -11,8 +11,6 @@ const Details = () => {
     const [single, setSingle] = useState([])
     const naviagte = useNavigate()
 
-    console.log(info)
-
     const songsOfAlbum = async()=> {
         const response = await fetch("http://localhost:3000/api/product/songsOfAlbum?q="+info.title+"&n="+info.artistId._id)
         const json = await response.json()
