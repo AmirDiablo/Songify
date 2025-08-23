@@ -1,4 +1,6 @@
 const  { createClient } = require('redis');
+const  { Repository } = require('redis-om');
+const userSchema = require("./userSchema")
 
 const redisClient = createClient({
     username: 'default',
@@ -20,4 +22,8 @@ redisClient.on('error', (err) => {
   console.log('Connected to Redis');
 })();
 
-module.exports = {redisClient};
+const userRepository = new Repository(userSchema, redisClient);
+userRepository.dropIndex()
+userRepository.createIndex();
+
+module.exports = {redisClient, userRepository}

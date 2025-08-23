@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const userSchema = require('../userSchema');
 
 const accountSchema = new mongoose.Schema({
     username: {
@@ -26,10 +27,21 @@ const accountSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
+    monthlyListeners: {
+        type: Number
+    },
     followers: [ {type: mongoose.Types.ObjectId, ref: "Account"} ],
     followings: [ {type: mongoose.Types.ObjectId, ref: "Account"} ]
 }, {timestamps: true})
 
+
+accountSchema.virtual("followersCount").get(function() {
+    return this.followers.length
+})
+
+accountSchema.virtual("followingsCount").get(function() {
+    return this.followings.length
+})
 
 accountSchema.statics.signup = async function (username, email, password, isArtist) {
     const check = await this.findOne({email: email})

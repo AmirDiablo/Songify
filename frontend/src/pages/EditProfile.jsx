@@ -65,7 +65,7 @@ const EditProfile = () => {
 
             if(response.ok) {
                 updateProfile(json)
-                navigate(-1)
+                navigate("/listenerProfile")
             }else{
                 console.log(json)
             }
@@ -81,7 +81,7 @@ const EditProfile = () => {
             </div>
 
             <div className="relative mt-10">
-                {preview ? <img src={preview} alt="cover" className="w-[50%] rounded-full aspect-square mx-auto" /> : <img src={"/profiles/"+file} alt="cover" className="w-45 aspect-square mx-auto rounded-full" />}
+                {preview ? <img src={preview} alt="cover" className="w-[50%] object-cover rounded-full aspect-square mx-auto" /> : <img src={"/profiles/"+file} alt="cover" className="w-45 object-cover aspect-square mx-auto rounded-full" />}
                 <input onChange={chnagePreview} type="file" name="profile" id="profile" className="opacity-0 absolute top-0 left-[50%] -translate-x-[50%] w-45 aspect-square rounded-full" />
             </div>
             <div className="flex flex-col w-[90%] mx-auto mt-10">

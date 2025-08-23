@@ -20,7 +20,7 @@ const SideNav = ({setIsOpen}) => {
             <div onClick={close} className="absolute top-10 right-5 text-2xl"><RxCross1 /></div>
 
             <Link to="/listenerProfile" className="flex items-center gap-5 w-[80%]">
-                <img src={"profiles/"+user?.userInfo[0].profile} className="w-15 rounded-full aspect-square" />
+                <img src={"profiles/"+user?.userInfo[0].profile} className="w-15 object-cover rounded-full aspect-square" />
                 <div>
                     <p>{user?.userInfo[0].username}</p>
                     <p className="text-white/50">view Profile</p>

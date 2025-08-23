@@ -82,7 +82,7 @@ const Library = () => {
                     <div className="space-y-3 mt-5">
                         {playlists?.map(item=> (
                         <div key={item._id} onClick={()=> open(item)} className="flex items-center gap-2">
-                            <img src={"/cover/"+item?.cover} className="aspect-square w-20 rounded-2xl"/>
+                            <img src={"/cover/"+item?.cover} className="aspect-square object-cover w-20 rounded-2xl"/>
                             <div>
                                 <p className="text-[20px] font-[600]">{item?.name}</p>
                                 <div className="flex gap-1"><p className="text-white/50">Playlist by</p> {item?.creatorId?.username}</div>

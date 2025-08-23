@@ -4,7 +4,8 @@ const Account = require("../models/accountModel")
 const fs = require('fs')
 const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
-const redisClient = require("../redis")
+const {redisClient} = require("../redisClient")
+const MonthlyListener = require("../models/monthlyListeners")
 
 const createToken = (_id)=> {
     return jwt.sign({_id}, process.env.SECRET, { expiresIn: "10d" })
@@ -197,4 +198,49 @@ const setPass = async(req, res)=> {
     }
 }
 
-module.exports = { signup, userInfo, liveSearch, follow, followings, userLogin, editProfile, continueWithGoogle, changePass, setPass }
+const registerListener = async(req, res)=> {
+    const {userId, artistId} = req.body
+    const hyperloglogKey = `artistListener:${artistId}`
+    const register = await redisClient.pfAdd(hyperloglogKey, userId)
+    res.status(200).json("registered!")
+}
+
+const getMonthlyListeners = async(req, res)=> {
+    const artistId = req.params.artistId
+    const key = `monthlyListeners:${artistId}`
+    const exist = await redisClient.get(key)
+    let listenersCount;
+    if(exist) {
+        //cache hit
+        listenersCount = exist
+    }else{
+        //cache miss
+        const findDoc = await MonthlyListener.findOne({artistId}).sort({_id: -1}).limit(1)
+        listenersCount = findDoc.listenersCount
+        const registerToRedis = await redisClient.set(`monthlyListeners:${artistId}`, listenersCount, 'EX', 60 * 60 * 24 * 30)
+    }
+
+    res.status(200).json(listenersCount)
+}
+
+const ListenerStatics = async(req, res)=> {
+    const {artistId} = req.params
+    const infos = await MonthlyListener.find({artistId})
+    res.status(200).json(infos)
+}
+
+const mostfamous = async(req, res)=> {
+    const key = `mostFamousArtist:10`
+    const exist = await redisClient.get(key) || false
+    if(exist) {
+        //cache hit
+        res.status(200).json(JSON.parse(exist))
+    }else{
+        //cache miss
+        const mostfamous = await Account.find({isArtist: true}).sort({followers: -1}).limit(10)
+        const registerToRedis = await redisClient.set(key, JSON.stringify(mostfamous), 'EX', 60 * 60 * 24 * 7 )
+        res.status(200).json(mostfamous)
+    }
+}
+
+module.exports = { signup, userInfo, liveSearch, follow, followings, userLogin, editProfile, continueWithGoogle, changePass, setPass, registerListener, getMonthlyListeners, ListenerStatics, mostfamous }

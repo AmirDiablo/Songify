@@ -8,6 +8,7 @@ import { FaPlay } from "react-icons/fa6";
 import { IoShuffle } from "react-icons/io5";
 import { PiPlaylistBold } from "react-icons/pi";
 import { usePlayer } from "../context/PlayerContext";
+import {useLocation} from "react-router-dom"
 
 const Playing = ({changeHidden}) => {
     const {songs, setSongs, setPlay, index, setIsHidden, play, setPause, pause, isRandom, updatePlayedSongs, playedSongs} = usePlayer()
@@ -18,6 +19,8 @@ const Playing = ({changeHidden}) => {
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
+    const [counted, setCounted] = useState(false)
+    const location = useLocation()
 
     const fetchRandom = async()=> {
       const response = await fetch('http://localhost:3000/api/product/random')
@@ -54,22 +57,44 @@ const Playing = ({changeHidden}) => {
     const currentSong = songs[currentSongIndex];
 
     const submitStream = async ()=> {
-      fetch("http://localhost:3000/api/product/stream/"+currentSong._id, {
+      const userId = JSON.parse(localStorage.getItem("user")).id
+      fetch("http://localhost:3000/api/product/stream", {
         method: "PATCH",
+        body: JSON.stringify({trackId: currentSong._id}),
         headers: {
           "Content-Type" : "application/json"
         }
       })
+
+      fetch("http://localhost:3000/api/account/registerListener", {
+        method: "POST",
+        body: JSON.stringify({userId, artistId: currentSong.artistId._id}),
+        headers: {
+          "Content-Type" : "application/json"
+        }
+      })
+
+      if(location.pathname == '/playlistDetails') {
+        fetch("http://localhost:3000/api/playlist/countDailyStream", {
+          method: "POST",
+          body: JSON.stringify({playlistId: location.search.split("=")[1]}),
+          headers: {
+            "Content-Type" : "application/json"
+          }
+        })
+      }
     }
 
     useEffect(()=> {
-      if(progress >= 70) {
+      if(progress >= 70 && counted == false) {
         submitStream()
+        setCounted(true)
       }
-    }, [])
+    }, [currentTime, duration, currentSong])
 
     useEffect(()=> {
     setCurrentSongIndex(index)
+    setCounted(false)
     }, [index])
 
     useEffect(()=> {
@@ -120,6 +145,8 @@ const Playing = ({changeHidden}) => {
       };
     
       const handleNext = () => {
+        setCounted(false)
+        setProgress(0)
         setCurrentSongIndex(prevIndex => {
           if(!isRandom) {
             return prevIndex === songs.length - 1 ? 0 : prevIndex + 1
@@ -130,6 +157,8 @@ const Playing = ({changeHidden}) => {
       };
     
       const handlePrev = () => {
+        setCounted(false)
+        setProgress(0)
         setCurrentSongIndex((prevIndex) => 
           prevIndex === 0 ? songs.length - 1 : prevIndex - 1
         );

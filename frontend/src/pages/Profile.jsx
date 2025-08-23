@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaPlay } from "react-icons/fa6";
 import Musics from "../components/Musics";
 import {useUser} from "../context/UserContext"
+import Chart from "../components/Chart";
 
 const Profile = () => {
     const { user, updateFollowings, followings } = useUser()
@@ -10,6 +11,8 @@ const Profile = () => {
     const [artist, setArtist] = useState([])
     const [songs, setSongs] = useState([])
     const [albums, setAlbums] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
+    const [monthlyListeners, setMonthlyListerners] = useState(0)
     const navigate = useNavigate()
     const q = useLocation().search.split("=")[1]?.split("&")[0]  //id
     /* const n = useLocation().search.split("&")[1].split("=")[1]  //name */
@@ -30,6 +33,15 @@ const Profile = () => {
             setArtist(json)
         }
 
+    }
+
+    const fetchMonthly = async()=> {
+        const response = await fetch("http://localhost:3000/api/account/monthlyListeners/"+q)
+        const json = await response.json()
+        
+        if(response.ok) {
+            setMonthlyListerners(json)
+        }
     }
 
     const fetchSongs = async()=> {
@@ -71,12 +83,18 @@ const Profile = () => {
 
     useEffect(()=> {
         fetchArtist()
+        fetchMonthly()
         fetchSongs()
         fetchAlbums()
     }, [])
 
     const open = ()=> {
         navigate(`/releases?q=${q}`)
+    }
+
+    const openStatics = (e)=> {
+        e.preventDefault()
+        setIsOpen(true)
     }
 
     return ( 
@@ -92,17 +110,19 @@ const Profile = () => {
                         </div>
 
                         <div className="flex items-center justify-between px-5 py-5 md:mx-auto  div2">
-                            <button onClick={follow} className="border-1 border-white rounded-full px-5 py-1">{followings.includes(item._id) ? "unFollow" : "follow"}</button>
+                            <div className="space-y-3">
+                                <div className="space-x-5">
+                                    <button onClick={follow} className="border-1 border-white rounded-full px-5 py-1">{followings.includes(item._id) ? "unFollow" : "follow"}</button>
+                                    <button className="bg-green-600 p-2 rounded-[10px]" onClick={openStatics}>Show Statics</button>
+                                </div>
+                                <div className="flex items-center gap-2">Monthly Listeners: <p className="text-white/50">{monthlyListeners}</p></div>
+                            </div>
                             <div className="p-2 text-black text-[25px] flex justify-center items-center bg-green-500 aspect-square rounded-full w-15"><FaPlay /></div>
                         </div>
 
                     </div>
 
-                    {/* <div>
-                        <strong>Popular Songs</strong>
-
-
-                    </div> */}
+                    {isOpen && <div className="my-10"><Chart artistId={q} /></div>}
 
 
                     <div className="div3">

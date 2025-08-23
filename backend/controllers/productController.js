@@ -2,7 +2,7 @@ const {Track, Album} = require("../models/productModel")
 const Account = require('../models/accountModel')
 const validator = require("validator")
 const mongoose = require("mongoose")
-const {redisClient} = require("../redis")
+const {redisClient} = require("../redisClient")
 
 
 const post = async(req, res)=> {
@@ -131,8 +131,27 @@ const findSingle = async(req, res)=> {
 }
 
 const streamMusic = async(req, res)=> {
-    await redisClient.incr(`track:${req.params.id}:streams`)
-    res.status(200).send("stream counted")
+    const {trackId} = req.body;
+    await redisClient.incr(`streams:${trackId}`)
+    res.status(200).json("recorded")
+}
+
+const getTrends = async (req, res) => {
+  try {
+    const topTracks = await redisClient.zrevrange('track_ranking', 0, 9, 'WITHSCORES');
+    const result = [];
+
+    for (let i = 0; i < topTracks.length; i += 2) {
+      result.push({
+        trackId: topTracks[i],
+        streams: parseInt(topTracks[i + 1])
+      });
+    }
+    console.log(result)
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'خطا در دریافت لیست محبوب‌ترین ترک‌ها' });
+  }
 }
 
 const randomTrack = async(req, res)=> {
@@ -153,4 +172,4 @@ const randomTrack = async(req, res)=> {
     }
 }
 
-module.exports = { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle, streamMusic, randomTrack }
+module.exports = { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle, streamMusic, randomTrack, getTrends }

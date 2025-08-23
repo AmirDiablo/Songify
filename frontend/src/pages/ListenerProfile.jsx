@@ -8,10 +8,11 @@ import { FaArrowLeft } from "react-icons/fa6";
 const ListenerProfile = () => {
     const {user} = useUser()
     const {setSelectedId} = usePlaylist()
-    const myId = user?.userInfo[0]?._id
+    const myId = user?.userInfo && (user.userInfo[0] ? user.userInfo[0]._id : null); 
     const [playlists, setPlaylists] = useState([])
     const navigate = useNavigate()
-    
+
+    console.log("myId: ", myId);
 
     const fetchPlaylists = async()=> {
         const response = await fetch("http://localhost:3000/api/playlist/accountPlaylist?q="+myId, {
@@ -31,7 +32,7 @@ const ListenerProfile = () => {
         if(myId) {
             fetchPlaylists()
         }
-    }, [myId])
+    }, [ ,myId])
 
 
     const open = (playlist)=> {
@@ -48,7 +49,7 @@ const ListenerProfile = () => {
             </div>
 
             <div className="flex items-center gap-5 px-5 mt-10">
-                <img src={"/profiles/"+user?.userInfo[0].profile} className="w-30 rounded-full aspect-square" />
+                <img src={"/profiles/"+user?.userInfo[0]?.profile} className="w-30 object-cover rounded-full aspect-square" />
                 <div>
                     <p className="text-2xl font-[600]">{user?.userInfo[0].username}</p>
                     <div className="flex gap-5">
@@ -66,7 +67,7 @@ const ListenerProfile = () => {
                 <div className="mt-5 space-y-3">
                     {playlists?.map(item=> (
                         <div onClick={()=> open(item)} key={item?._id} className="flex gap-5">
-                            <img src={"/cover/"+item?.cover} className="w-15" />
+                            <img src={"/cover/"+item?.cover} className="w-15 object-cover" />
                             <div>
                                 <div>{item?.name}</div>
                                 <div className="text-white/50">{item.saveCount} saves</div>

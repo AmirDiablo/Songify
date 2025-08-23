@@ -1,6 +1,8 @@
 const {Playlist, SavedPlaylist} = require("../models/playlistModel")
 const mongoose = require("mongoose")
 const validator = require("validator")
+const {redisClient} = require('../redisClient')
+const TopPlaylists = require("../models/topPlaylists")
 
 const createPlaylist = async(req, res)=> {
     const { name, creatorId, isPublic } = validator.escape(req.body)
@@ -147,6 +149,7 @@ const deleteFromApp = async(req, res)=> {
 
 const deleteFromLibrary = async(req, res)=> {
     const {playlistId, userId} = req.body
+    const multi = redisClient.multi()
     try{
         if(!playlistId || !userId) {
             throw new Error("playlistId and userId is required")
@@ -155,6 +158,13 @@ const deleteFromLibrary = async(req, res)=> {
             throw new Error("this id is not a real one")
         }
         const playlist = await SavedPlaylist.deleteOne({userId, playlistId})
+        const value = await redisClient.hGet(`playlist:${playlistId}:daily`, "saveCount")
+        if(value) {
+            multi.hIncrBy(`playlist:${playlistId}:daily`, "saveCount", -1)
+            multi.hIncrBy(`playlist:${playlistId}:daily`, "score", -3)
+            await redisClient.zIncrBy("playlist:topDaily", -3, playlistId)
+        }
+        await multi.exec()
         const decreaseSave = await Playlist.updateOne({_id: playlistId}, {$inc: {saveCount: -1}})
         res.status(200).json(playlist)
     }
@@ -183,6 +193,7 @@ const deleteFromPlaylst = async(req, res)=> {
 
 const savePlaylist = async(req, res)=> {
     const {userId, playlistId} = req.body
+    const multi =  redisClient.multi()
     try{
         if(!userId || !playlistId) {
             throw new Error("userId and playlistId is required")
@@ -191,6 +202,10 @@ const savePlaylist = async(req, res)=> {
             throw new Error("this id is not a real one")
         }
         const save = await SavedPlaylist.create({userId, playlistId})
+        multi.hIncrBy(`playlist:${playlistId}:daily`, "saveCount", 1)
+        multi.hIncrBy(`playlist:${playlistId}:daily`, "score", 3)
+        await redisClient.zIncrBy(`playlist:topDaily`, 3, playlistId)
+        await multi.exec()
         const increaseSave = await Playlist.updateOne({_id: playlistId}, {$inc: {saveCount: 1}})
         res.status(200).json(save)
     }
@@ -228,4 +243,35 @@ const accountPlaylist = async(req, res)=> {
     }
 }
 
-module.exports = { createPlaylist, myPlaylists, playlistInfo, addToPlaylist, editPlaylist, deleteFromApp, deleteFromLibrary, deleteFromPlaylst, savePlaylist, findPlaylist, accountPlaylist }
+const countDailyStream = async(req, res)=> {
+    const multi = redisClient.multi()
+    const {playlistId} = req.body
+    multi.hIncrBy(`playlist:${playlistId}:daily`, "streamCount", 1)
+    multi.hIncrBy(`playlist:${playlistId}:daily`, "score", 1)
+    await multi.exec()
+    await redisClient.zIncrBy(`playlist:topDaily`, 1, playlistId)
+    res.status(200).json("stream recorded")
+}
+
+const dailyTopPlaylists = async(req, res)=> {
+    const exist =  await redisClient.lRange('playlist:topDaily:result', 0, 9)
+    const jsonString = `[${exist.join(',')}]`; // ترکیب رشته‌ها به یک آرایه JSON
+    const parsedData = JSON.parse(jsonString);
+    if(parsedData.length != 0) {
+        res.status(200).json(parsedData)
+    }else{
+        const topTen = await TopPlaylists.find({})
+        .populate({
+                path: "playlistId",
+                populate: {
+                    path: "creatorId"
+                }
+            })
+        for(const item of topTen) {
+            await redisClient.lPush("playlist:topDaily:result", JSON.stringify(item))
+        }
+        res.status(200).json(topTen)
+    }
+}
+
+module.exports = { createPlaylist, myPlaylists, playlistInfo, addToPlaylist, editPlaylist, deleteFromApp, deleteFromLibrary, deleteFromPlaylst, savePlaylist, findPlaylist, accountPlaylist, countDailyStream, dailyTopPlaylists }
