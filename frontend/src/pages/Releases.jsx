@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
 const Releases = () => {
     const [albums, setAlbums] = useState([])
@@ -63,7 +64,7 @@ const Releases = () => {
                             <img src={"/cover/"+item.cover} alt="album cover" className="w-30 aspect-square" />
                             <div>
                                 <p className="text-[20px] font-[600]">{item.title}</p>
-                                <p className="text-white/50">{item.releaseDate}</p>
+                                <p className="text-white/50">{format(new Date(item.releaseDate), "MM/dd/yyyy")}</p>
                             </div>
                         </div>
                     ))}

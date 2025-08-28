@@ -2,7 +2,7 @@ const {Track, Album} = require("../models/productModel")
 const Account = require('../models/accountModel')
 const validator = require("validator")
 const mongoose = require("mongoose")
-const {redisClient} = require("../redisClient")
+const {redisClient, musicRepository, userRepository} = require("../redisClient")
 
 
 const post = async(req, res)=> {
@@ -172,4 +172,52 @@ const randomTrack = async(req, res)=> {
     }
 }
 
-module.exports = { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle, streamMusic, randomTrack, getTrends }
+const newRelease = async(req, res)=> {
+    const exist = await redisClient.zRange('music:newReleases', 0, 19)
+    
+    if(exist.length != 0) {
+        console.log("cache hit")
+        /* const multi = redisClient.multi() */
+        const promises = exist.map(id => musicRepository.fetch(`music:${id}:newRelease`));
+        const results = await Promise.all(promises);
+        console.log(results)
+        res.status(200).json(results)
+    }else{
+        console.log("cache miss")
+        try{
+            const newReleases = await Track.find({}).sort({releaseDate: -1}).limit(20).populate("artistId")  //or based on timestamp
+            const multi = redisClient.multi()
+            newReleases.forEach(async(song)=> {
+                musicRepository.save(`music:${song?._id}:newRelease`, {
+                    title: song.title,
+                    _id: song?._id.toString(),
+                    cover: song.cover,
+                    artistId: {_id: song.artistId._id.toString(), username: song.artistId.username},
+                    fileName: song.fileName,
+                    type: song.type,
+                    albumName: song.albumName ? song.albumName : "",
+                    streamCount: song.streamCount,
+                    genre: song.genre,
+                    releaseDate: new Date(song?.releaseDate).valueOf()
+                })
+
+                musicRepository.expire(`music:${song?._id}:newRelease`, 3600 * 24)
+
+                multi.zAdd('music:newReleases', {
+                    value: song._id.toString(),
+                    score: song.releaseDate
+                })
+            })
+
+            await multi.exec()
+            await redisClient.expire('music:newReleases', 3600 * 24)
+            res.status(200).json(newReleases)
+        }
+        catch(error) {
+            console.log(error)
+            res.status(500).json({error: error.message})
+        }
+    }
+}
+
+module.exports = { post, find, someSongs, someAlbums, postAlbum, albums, singles, songsOfAlbum, findSingle, streamMusic, randomTrack, getTrends, newRelease }

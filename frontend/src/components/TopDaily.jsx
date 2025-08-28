@@ -28,7 +28,7 @@ const TopDaily = () => {
     }, [])
 
     return ( 
-        <div className="text-white px-5">
+        <div className="text-white px-10">
             <div className="flex justify-between">
                 <p className="text-[20px] font-[600]">Top Daily Playlist</p>
                 <p className="text-white/50">See All</p>
@@ -36,7 +36,6 @@ const TopDaily = () => {
 
             {topPlaylists?.length != 0 && 
                 <div className="px-5 mt-5">
-                    <strong >Playlist</strong>
 
                     <div className="space-y-3 mt-5">
                         {topPlaylists?.map(item=> (

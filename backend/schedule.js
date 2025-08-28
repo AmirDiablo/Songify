@@ -5,7 +5,7 @@ const MonthlyListener = require("./models/monthlyListeners")
 const TopPlaylists = require("./models/topPlaylists")
 
 const cacheusers = async()=> {
-    const pipeline = redisClient.pipeline()
+    const pipeline = redisClient.multi()
     const users = await Account.find({followersCount: {$gte: 100}})
 
     for(const user of users) {

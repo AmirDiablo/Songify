@@ -5,6 +5,7 @@ import boy from "../assets/boy.png"
 import TopDaily from "../components/TopDaily";
 import { useState } from "react";
 import SideNav from "../components/SideNav";
+import Musics from "../components/Musics"
 import defualtProfile from "../assets/profile.jpg"
 import {useUser} from "../context/UserContext"
 import { useEffect } from "react";
@@ -15,6 +16,7 @@ const Home = () => {
     const {user} = useUser()
     const [isOpen, setIsOpen] = useState(false)
     const [famous, setFamous] = useState([])
+    const [newRelease, setNewRelease] = useState([])
     const navigate = useNavigate()
 
     const openMenu = ()=> {
@@ -37,8 +39,18 @@ const Home = () => {
         }
     }
 
+    const fetchNewReleases = async()=> {
+        const response = await fetch("http://localhost:3000/api/product/newRelease")
+        const json = await response.json()
+
+        if(response.ok) {
+            setNewRelease(json)
+        }
+    }
+
     useEffect(()=> {
         fetchMostFamousArtists()
+        fetchNewReleases()
     }, [])
 
     return ( 
@@ -66,7 +78,7 @@ const Home = () => {
             <Categories />
 
             <div className="mt-10  mb-10">
-                <p className="text-white text-[20px] px-10 mb-3">Curated & Trending</p>
+                <p className="text-white text-[20px] font-[600] px-10 mb-3">Curated & Trending</p>
                 <div className="flex gap-2 px-10 *:h-max *:flex-none overflow-x-auto hidenScroll">
 
                     <div className="rounded-3xl bg-purple-300 w-[90%] max-w-120 aspect-video relative ">
@@ -101,6 +113,24 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
+            </div>
+
+
+            <div className="mb-50">
+                <p className="text-white ml-10 mb-3 font-[600] text-[20px]">New Releases</p>
+
+                {newRelease?.length != 0 && 
+                    <div className="px-5 mt-5">
+
+                        <div className="space-y-3 mt-5">
+                            {newRelease?.map((item, index)=> (
+                            <Musics song={{title: item.title, artistId: item.artistId, _id: item._id, cover: item.cover, fileName: item.fileName, albumName: item.albumName, genre: item.genre, releaseDate: item.releaseDate, type: item.type, streamCount: item.streamCount}} songIndex={index} playList={newRelease} />
+                        ))}
+                        </div>
+
+                    </div>
+                }
+
             </div>
             
         </div>

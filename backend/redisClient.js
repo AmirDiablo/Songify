@@ -1,6 +1,7 @@
 const  { createClient } = require('redis');
 const  { Repository } = require('redis-om');
-const userSchema = require("./userSchema")
+const userSchema = require("./userSchema");
+const musicSchema = require('./musicSchema');
 
 const redisClient = createClient({
     username: 'default',
@@ -26,4 +27,8 @@ const userRepository = new Repository(userSchema, redisClient);
 userRepository.dropIndex()
 userRepository.createIndex();
 
-module.exports = {redisClient, userRepository}
+const musicRepository = new Repository(musicSchema, redisClient)
+musicRepository.dropIndex()
+musicRepository.createIndex()
+
+module.exports = {redisClient, userRepository, musicRepository}
